@@ -19,7 +19,7 @@ module "chatbot" {
   log_level = "INFO"
 
   chatbot_role_allow_notifications = true
-  chatbot_role_allow_labmda_invoke = true
+  chatbot_role_allow_lamdda_invoke = true
   chatbot_role_allow_support_access = true
   chatbot_role_allow_read_only_access = true
   chatbot_role_permissions_boundary_policy_arn = var.chatbot_role_permissions_boundary_policy_arn

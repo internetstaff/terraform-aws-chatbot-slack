@@ -108,7 +108,7 @@ data "aws_iam_policy_document" "chatbot_notifications_only" {
 }
 
 resource "aws_iam_role_policy" "chatbot_lambda_invoke" {
-  count = var.enabled && var.chatbot_role_allow_labmda_invoke ? 1 : 0
+  count = var.enabled && var.chatbot_role_allow_lambda_invoke ? 1 : 0
 
   name = "LambdaInvoke"
   role = aws_iam_role.chatbot[0].id
@@ -180,5 +180,27 @@ resource "aws_cloudwatch_event_target" "health" {
   
   rule      = aws_cloudwatch_event_rule.health[0].name
   target_id = "chatbot-health-alerts"
+  arn       = aws_sns_topic.chatbot[0].arn
+}
+
+resource "aws_cloudwatch_event_rule" "guardduty" {
+  count = var.enabled ? 1 : 0
+
+  name = "chatbot-guardduty-alerts"
+  description = "Send AWS Guarduty events to AWS Chatbot"
+  event_pattern = <<-EOT
+    {
+      "source": [
+        "aws.guardduty"
+      ]
+    }
+    EOT
+}
+
+resource "aws_cloudwatch_event_target" "guardduty" {
+  count = var.enabled ? 1 : 0
+
+  rule      = aws_cloudwatch_event_rule.guardduty[0].name
+  target_id = "chatbot-guardduty-alerts"
   arn       = aws_sns_topic.chatbot[0].arn
 }

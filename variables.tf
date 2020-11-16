@@ -55,7 +55,7 @@ variable "chatbot_role_allow_notifications" {
     EOT
 }
 
-variable "chatbot_role_allow_labmda_invoke" {
+variable "chatbot_role_allow_lambda_invoke" {
   type = bool
   default = false
   description = "Allow users to invoke Lambda functions from Slack."
